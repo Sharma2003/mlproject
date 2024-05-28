@@ -9,6 +9,9 @@ from dataclasses import dataclass
 from scr.component.data_transformations import DataTransformation
 from scr.component.data_transformations import DataTransformationConfig
 
+from scr.component.model_trainer import ModelTrainer
+from scr.component.model_trainer import ModelTrainerConfig
+
 @dataclass
 class DataIngestionConfig:
     train_data_path: str = os.path.join('artifacts','train.csv')
@@ -53,5 +56,10 @@ class DataIngestion:
 if __name__ == "__main__":
     obj = DataIngestion()
     train_obj,test_obj = obj.initiate_data_ingestion()
+
     data_transformation = DataTransformation()
-    data_transformation.initiate_data_transformation(train_obj,test_obj)
+    train_arr,test_arr,_= data_transformation.initiate_data_transformation(train_obj,test_obj)
+
+    model_trainer = ModelTrainer()
+    Bestscore = model_trainer.initiate_model_trainer(train_arr,test_arr)
+    print(Bestscore)
